@@ -1,6 +1,7 @@
 from ultralytics import YOLO
 import cv2
 import os
+import time
 
 
 # Carregue o modelo YOLOv8 treinado para capacete (.pt)
@@ -9,8 +10,22 @@ model = YOLO('models/hemletYoloV8_25epochs.pt')
 
 # Inicialize a captura de vídeo da câmera padrão
 cap = cv2.VideoCapture(0)
+# Tenta definir o FPS da câmera para 30.
+# Nota: A câmera pode não suportar essa configuração ou o driver pode ignorá-la.
+# O FPS real ainda será limitado pela velocidade de processamento.
+cap.set(cv2.CAP_PROP_FPS, 30)
+
+# Variáveis para cálculo do FPS
+prev_time = 0
+fps = 0
 
 while True:
+    # Cálculo do FPS
+    current_time = time.time()
+    if prev_time > 0:
+        fps = 1 / (current_time - prev_time)
+    prev_time = current_time
+
     ret, frame = cap.read()
     if not ret:
         break
