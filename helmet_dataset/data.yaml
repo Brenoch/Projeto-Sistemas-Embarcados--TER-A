@@ -1,0 +1,4 @@
+train: ./helmet_dataset/train/images
+val: ./helmet_dataset/valid/images
+nc: 3
+names: ['hat', 'helmet', 'no_helmet']
